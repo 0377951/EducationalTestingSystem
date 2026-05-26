@@ -54,6 +54,13 @@
             </configuration>
           </execution>
         </executions>
+        <configuration>
+          <excludes>
+            <exclude>com/taylors/csc61204/App.class</exclude>
+            <exclude>com/taylors/csc61204/view/**</exclude>
+            <exclude>com/taylors/csc61204/controller/**</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>

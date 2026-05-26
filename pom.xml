@@ -64,6 +64,16 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <!-- Swing UI (View), controller glue, and bootstrap are verified
+                         via the live demo / screenshots, not unit tests. They are not
+                         instantiable on a headless CI runner, so exclude from coverage. -->
+                    <excludes>
+                        <exclude>com/taylors/csc61204/App.class</exclude>
+                        <exclude>com/taylors/csc61204/view/**</exclude>
+                        <exclude>com/taylors/csc61204/controller/**</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
