@@ -2,7 +2,10 @@ package com.taylors.csc61204.controller;
 
 import com.taylors.csc61204.model.Quiz;
 import com.taylors.csc61204.model.QuizResult;
+import com.taylors.csc61204.model.StudentPerformance;
 import com.taylors.csc61204.pattern.strategy.DifficultyBasedStrategy;
+import com.taylors.csc61204.persistence.DataStore;
+import com.taylors.csc61204.persistence.DataStoreException;
 import com.taylors.csc61204.service.FeedbackService;
 import com.taylors.csc61204.service.QuizService;
 import com.taylors.csc61204.view.MainFrame;
@@ -11,24 +14,29 @@ import com.taylors.csc61204.view.ResultsScreen;
 import com.taylors.csc61204.view.StartScreen;
 
 /**
- * Wires the View to the Service layer. The only class allowed to call services
- * from the GUI side. Demonstrates clean MVC separation: views collect input,
- * the controller routes it, the service does the work.
+ * Wires the View to the Service and Persistence layers. The only class allowed
+ * to call services from the GUI side. Demonstrates clean MVC separation:
+ * views collect input, the controller routes it, the service does the work,
+ * the data store makes the outcome survive restarts.
  */
 public class QuizController {
 
     private static final int DEFAULT_TIME_LIMIT_SECONDS = 600;
-    private static final String STUDENT_ID = "S-001";
 
     private final MainFrame view;
     private final QuizService quizService;
     private final FeedbackService feedbackService;
+    private final StudentPerformance performance;
+    private final DataStore store;
 
     public QuizController(MainFrame view, QuizService quizService,
-                          FeedbackService feedbackService) {
+                          FeedbackService feedbackService,
+                          StudentPerformance performance, DataStore store) {
         this.view = view;
         this.quizService = quizService;
         this.feedbackService = feedbackService;
+        this.performance = performance;
+        this.store = store;
     }
 
     public void start() {
@@ -66,9 +74,20 @@ public class QuizController {
     }
 
     private void onSubmit(Quiz quiz, java.util.List<String> answers) {
-        QuizResult result = quizService.submit(quiz, answers, STUDENT_ID);
+        QuizResult result = quizService.submit(quiz, answers, performance.getStudentId());
+        performance.record(result);
+        persist();
         String summary = feedbackService.summaryFor(result);
         String report = feedbackService.progressReport();
         view.showResults(new ResultsScreen(result, summary, report, this::showStartScreen));
+    }
+
+    /** Best-effort save — a persistence failure must not crash the results screen. */
+    private void persist() {
+        try {
+            store.savePerformance(performance);
+        } catch (DataStoreException e) {
+            view.showError("Could not save your progress: " + e.getMessage());
+        }
     }
 }
