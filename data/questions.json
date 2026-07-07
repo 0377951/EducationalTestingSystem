@@ -1,0 +1,138 @@
+[
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "What is 2 + 2?",
+    "category": "Math",
+    "difficulty": "easy",
+    "options": ["3", "4", "5", "6"],
+    "correctAnswer": "4"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "Which number is prime?",
+    "category": "Math",
+    "difficulty": "easy",
+    "options": ["4", "6", "7", "9"],
+    "correctAnswer": "7"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "What is the square root of 81?",
+    "category": "Math",
+    "difficulty": "medium",
+    "options": ["7", "8", "9", "10"],
+    "correctAnswer": "9"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "Solve: 12 * 12",
+    "category": "Math",
+    "difficulty": "hard",
+    "options": ["124", "132", "144", "156"],
+    "correctAnswer": "144"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "Which planet is closest to the Sun?",
+    "category": "Science",
+    "difficulty": "easy",
+    "options": ["Venus", "Mercury", "Earth", "Mars"],
+    "correctAnswer": "Mercury"
+  },
+  {
+    "type": "TRUE_FALSE",
+    "prompt": "Water boils at 100 degrees Celsius at sea level.",
+    "category": "Science",
+    "difficulty": "easy",
+    "correctAnswer": true
+  },
+  {
+    "type": "TRUE_FALSE",
+    "prompt": "The Sun is a planet.",
+    "category": "Science",
+    "difficulty": "easy",
+    "correctAnswer": false
+  },
+  {
+    "type": "SHORT_ANSWER",
+    "prompt": "What is the chemical symbol for water?",
+    "category": "Science",
+    "difficulty": "medium",
+    "expectedAnswer": "H2O"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "Who wrote 'Romeo and Juliet'?",
+    "category": "Literature",
+    "difficulty": "easy",
+    "options": ["Dickens", "Shakespeare", "Austen", "Wilde"],
+    "correctAnswer": "Shakespeare"
+  },
+  {
+    "type": "SHORT_ANSWER",
+    "prompt": "Which author wrote '1984'?",
+    "category": "Literature",
+    "difficulty": "medium",
+    "expectedAnswer": "Orwell"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "In which year did WWII end?",
+    "category": "History",
+    "difficulty": "easy",
+    "options": ["1943", "1944", "1945", "1946"],
+    "correctAnswer": "1945"
+  },
+  {
+    "type": "TRUE_FALSE",
+    "prompt": "The Great Wall of China is visible from the Moon with the naked eye.",
+    "category": "History",
+    "difficulty": "medium",
+    "correctAnswer": false
+  },
+  {
+    "type": "SHORT_ANSWER",
+    "prompt": "Who was the first President of the United States?",
+    "category": "History",
+    "difficulty": "medium",
+    "expectedAnswer": "Washington"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "What is the capital of Australia?",
+    "category": "Geography",
+    "difficulty": "medium",
+    "options": ["Sydney", "Melbourne", "Canberra", "Perth"],
+    "correctAnswer": "Canberra"
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "Which continent is the Sahara desert on?",
+    "category": "Geography",
+    "difficulty": "easy",
+    "options": ["Asia", "Africa", "Australia", "South America"],
+    "correctAnswer": "Africa"
+  },
+  {
+    "type": "TRUE_FALSE",
+    "prompt": "Mount Everest is the tallest mountain above sea level.",
+    "category": "Geography",
+    "difficulty": "easy",
+    "correctAnswer": true
+  },
+  {
+    "type": "MULTIPLE_CHOICE",
+    "prompt": "How many colors are in a rainbow?",
+    "category": "General",
+    "difficulty": "easy",
+    "options": ["5", "6", "7", "8"],
+    "correctAnswer": "7"
+  },
+  {
+    "type": "SHORT_ANSWER",
+    "prompt": "What language is spoken in Brazil?",
+    "category": "General",
+    "difficulty": "easy",
+    "expectedAnswer": "Portuguese"
+  }
+]
