@@ -1,5 +1,6 @@
 package com.taylors.csc61204.view;
 
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.Quiz;
 
@@ -16,8 +17,8 @@ import java.util.function.Consumer;
 public class QuizScreen extends JPanel {
 
     private final Quiz quiz;
-    private final Consumer<List<Integer>> onSubmit;
-    private final List<Integer> answers = new ArrayList<>();
+    private final Consumer<List<String>> onSubmit;
+    private final List<String> answers = new ArrayList<>();
     private int currentIndex = 0;
 
     private final JLabel progressLabel = new JLabel();
@@ -26,11 +27,11 @@ public class QuizScreen extends JPanel {
     private final ButtonGroup optionGroup = new ButtonGroup();
     private final JButton nextButton = new JButton("Next");
 
-    public QuizScreen(Quiz quiz, Consumer<List<Integer>> onSubmit) {
+    public QuizScreen(Quiz quiz, Consumer<List<String>> onSubmit) {
         this.quiz = quiz;
         this.onSubmit = onSubmit;
         for (int i = 0; i < quiz.size(); i++) {
-            answers.add(-1);
+            answers.add(null);
         }
         buildLayout();
         renderQuestion();
@@ -69,10 +70,12 @@ public class QuizScreen extends JPanel {
         for (AbstractButton b : java.util.Collections.list(optionGroup.getElements())) {
             optionGroup.remove(b);
         }
-        List<String> opts = q.getOptions();
-        for (int i = 0; i < opts.size(); i++) {
-            JRadioButton btn = new JRadioButton(opts.get(i));
-            btn.setActionCommand(String.valueOf(i));
+        // GUI renders MCQ only. TF/ShortAnswer subclasses exist in the model
+        // for the IS-A story but aren't exposed by the current selection strategies.
+        List<String> opts = ((MultipleChoiceQuestion) q).getOptions();
+        for (String opt : opts) {
+            JRadioButton btn = new JRadioButton(opt);
+            btn.setActionCommand(opt);
             optionGroup.add(btn);
             optionsPanel.add(btn);
         }
@@ -88,7 +91,7 @@ public class QuizScreen extends JPanel {
                     "No answer selected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        answers.set(currentIndex, Integer.parseInt(optionGroup.getSelection().getActionCommand()));
+        answers.set(currentIndex, optionGroup.getSelection().getActionCommand());
         if (isLastQuestion()) {
             onSubmit.accept(List.copyOf(answers));
         } else {

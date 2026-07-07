@@ -65,7 +65,7 @@ public class QuizController {
         }
     }
 
-    private void onSubmit(Quiz quiz, java.util.List<Integer> answers) {
+    private void onSubmit(Quiz quiz, java.util.List<String> answers) {
         QuizResult result = quizService.submit(quiz, answers, STUDENT_ID);
         String summary = feedbackService.summaryFor(result);
         String report = feedbackService.progressReport();

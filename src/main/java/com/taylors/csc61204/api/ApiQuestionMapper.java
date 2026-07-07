@@ -1,6 +1,7 @@
 package com.taylors.csc61204.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 
 import java.util.ArrayList;
@@ -59,9 +60,8 @@ public class ApiQuestionMapper {
             options.add(decodeHtml(wrong.asText()));
         }
         Collections.shuffle(options, random);
-        int correctIndex = options.indexOf(correctAnswer);
 
-        return new Question(prompt, options, correctIndex, category, difficulty);
+        return new MultipleChoiceQuestion(prompt, options, correctAnswer, category, difficulty);
     }
 
     /** Trivia DB returns HTML entities — decode the common ones. */

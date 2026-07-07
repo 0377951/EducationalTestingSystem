@@ -2,6 +2,7 @@ package com.taylors.csc61204.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,13 +20,13 @@ class ApiQuestionMapperTest {
     private ApiQuestionMapper mapper;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         json = new ObjectMapper();
         mapper = new ApiQuestionMapper(new Random(42));
     }
 
     @Test
-    void mapResponse_validSingleQuestion_returnsOneQuestion() throws Exception {
+    void mapResponse_validSingleQuestion_returnsOneMultipleChoiceQuestion() throws Exception {
         String body = """
                 {"response_code":0,"results":[{
                   "category":"Science",
@@ -37,12 +38,13 @@ class ApiQuestionMapperTest {
         JsonNode root = json.readTree(body);
 
         List<Question> result = mapper.mapResponse(root);
+        MultipleChoiceQuestion q = (MultipleChoiceQuestion) result.get(0);
 
         assertAll(
                 () -> assertEquals(1, result.size()),
-                () -> assertEquals("What is H2O?", result.get(0).getPrompt()),
-                () -> assertEquals("Science", result.get(0).getCategory()),
-                () -> assertEquals(4, result.get(0).getOptions().size())
+                () -> assertEquals("What is H2O?", q.getPrompt()),
+                () -> assertEquals("Science", q.getCategory()),
+                () -> assertEquals(4, q.getOptions().size())
         );
     }
 
@@ -71,7 +73,7 @@ class ApiQuestionMapperTest {
                   "incorrect_answers":["A","B","C"]
                 }]}""";
         JsonNode root = json.readTree(body);
-        Question q = mapper.mapResponse(root).get(0);
+        MultipleChoiceQuestion q = (MultipleChoiceQuestion) mapper.mapResponse(root).get(0);
         assertAll(
                 () -> assertEquals("What did he say \"hello\"?", q.getPrompt()),
                 () -> assertTrue(q.getOptions().contains("Yes & No"))
@@ -79,7 +81,7 @@ class ApiQuestionMapperTest {
     }
 
     @Test
-    void mapResponse_correctAnswerIsAmongOptions_correctIndexPointsToIt() throws Exception {
+    void mapResponse_correctAnswer_isMarkedCorrectByPolymorphicIsCorrect() throws Exception {
         String body = """
                 {"response_code":0,"results":[{
                   "category":"Math",
@@ -90,6 +92,6 @@ class ApiQuestionMapperTest {
                 }]}""";
         JsonNode root = json.readTree(body);
         Question q = mapper.mapResponse(root).get(0);
-        assertEquals("4", q.getOptions().get(q.getCorrectIndex()));
+        assertTrue(q.isCorrect("4"));
     }
 }

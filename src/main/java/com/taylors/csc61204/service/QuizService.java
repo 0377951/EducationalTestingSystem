@@ -46,7 +46,7 @@ public class QuizService {
     /**
      * Grades a submission and produces a {@link QuizResult}.
      */
-    public QuizResult submit(Quiz quiz, List<Integer> answers, String studentId) {
+    public QuizResult submit(Quiz quiz, List<String> answers, String studentId) {
         int correct = quiz.grade(answers);
         String category = inferCategory(quiz);
         return new QuizResult(quiz.getQuizId(), studentId, correct, quiz.size(), category);

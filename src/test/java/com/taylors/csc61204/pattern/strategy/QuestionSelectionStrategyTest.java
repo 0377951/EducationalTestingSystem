@@ -1,5 +1,6 @@
 package com.taylors.csc61204.pattern.strategy;
 
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.QuestionBank;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,22 +17,25 @@ class QuestionSelectionStrategyTest {
 
     private QuestionBank bank;
 
+    private static Question mcq(String prompt, String category, String difficulty) {
+        return new MultipleChoiceQuestion(prompt, List.of("a", "b"), "a", category, difficulty);
+    }
+
     @BeforeEach
     void setUp() {
         bank = new QuestionBank();
-        bank.add(new Question("Math Q1", List.of("a", "b"), 0, "Math", "easy"));
-        bank.add(new Question("Math Q2", List.of("a", "b"), 1, "Math", "medium"));
-        bank.add(new Question("Math Q3", List.of("a", "b"), 0, "Math", "hard"));
-        bank.add(new Question("Sci Q1",  List.of("a", "b"), 1, "Science", "easy"));
-        bank.add(new Question("Sci Q2",  List.of("a", "b"), 0, "Science", "medium"));
-        bank.add(new Question("His Q1",  List.of("a", "b"), 1, "History", "easy"));
+        bank.add(mcq("Math Q1", "Math", "easy"));
+        bank.add(mcq("Math Q2", "Math", "medium"));
+        bank.add(mcq("Math Q3", "Math", "hard"));
+        bank.add(mcq("Sci Q1",  "Science", "easy"));
+        bank.add(mcq("Sci Q2",  "Science", "medium"));
+        bank.add(mcq("His Q1",  "History", "easy"));
     }
 
     @Test
     void randomStrategy_validCount_returnsExactCount() {
         QuestionSelectionStrategy s = new RandomSelectionStrategy(new Random(42));
-        List<Question> result = s.select(bank, 3);
-        assertEquals(3, result.size());
+        assertEquals(3, s.select(bank, 3).size());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.taylors.csc61204.controller;
 
 import com.taylors.csc61204.api.ApiException;
 import com.taylors.csc61204.api.TriviaApiClient;
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.QuestionBank;
 import com.taylors.csc61204.model.StudentPerformance;
@@ -25,7 +26,7 @@ class QuizControllerTest {
 
         QuestionBank bank = new QuestionBank();
         for (int i = 0; i < 5; i++) {
-            bank.add(new Question("Q" + i, List.of("a", "b"), 0, "Math", "easy"));
+            bank.add(new MultipleChoiceQuestion("Q" + i, List.of("a", "b"), "a", "Math", "easy"));
         }
         TriviaApiClient api = new StubApi();
         QuizService quizService = new QuizService(bank, api);
