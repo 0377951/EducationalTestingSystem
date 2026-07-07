@@ -7,7 +7,8 @@ import java.util.Objects;
 /**
  * Represents a complete quiz: an ordered set of questions with metadata.
  * Once constructed, the question list is immutable; grading takes a list
- * of answer indices and returns the number of correct responses.
+ * of response strings (one per question, in order) and returns the number
+ * of correct responses.
  */
 public class Quiz {
 
@@ -49,21 +50,22 @@ public class Quiz {
     }
 
     /**
-     * Grades a list of answer indices and returns the number of correct answers.
+     * Grades a list of response strings and returns the number of correct answers.
+     * Polymorphic: each question decides for itself whether a response is correct.
      *
-     * @param answers one answer index per question, in order
+     * @param responses one response per question, in order
      * @return number of correct answers (0 to size())
-     * @throws IllegalArgumentException if the answer count does not match the quiz size
+     * @throws IllegalArgumentException if the response count does not match the quiz size
      */
-    public int grade(List<Integer> answers) {
-        Objects.requireNonNull(answers, "answers cannot be null");
-        if (answers.size() != questions.size()) {
+    public int grade(List<String> responses) {
+        Objects.requireNonNull(responses, "responses cannot be null");
+        if (responses.size() != questions.size()) {
             throw new IllegalArgumentException(
-                    "Expected " + questions.size() + " answers but got " + answers.size());
+                    "Expected " + questions.size() + " responses but got " + responses.size());
         }
         int correct = 0;
         for (int i = 0; i < questions.size(); i++) {
-            if (questions.get(i).isCorrect(answers.get(i))) {
+            if (questions.get(i).isCorrect(responses.get(i))) {
                 correct++;
             }
         }

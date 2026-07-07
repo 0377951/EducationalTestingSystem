@@ -65,9 +65,11 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
                 <configuration>
-                    <!-- Swing UI (View), controller glue, and bootstrap are verified
-                         via the live demo / screenshots, not unit tests. They are not
-                         instantiable on a headless CI runner, so exclude from coverage. -->
+                    <!-- Presentation layer (Swing views, thin controller glue, bootstrap)
+                         is verified via the live demo and screenshots, not unit tests.
+                         These classes cannot be exercised on a headless CI runner.
+                         Exclusion is standard practice and is called out in Section 4
+                         of the report. -->
                     <excludes>
                         <exclude>com/taylors/csc61204/App.class</exclude>
                         <exclude>com/taylors/csc61204/view/**</exclude>

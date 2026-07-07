@@ -2,6 +2,7 @@ package com.taylors.csc61204.service;
 
 import com.taylors.csc61204.api.ApiException;
 import com.taylors.csc61204.api.TriviaApiClient;
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.QuestionBank;
 import com.taylors.csc61204.model.Quiz;
@@ -24,7 +25,8 @@ class QuizServiceTest {
     void setUp() {
         bank = new QuestionBank();
         for (int i = 0; i < 10; i++) {
-            bank.add(new Question("Q" + i, List.of("a", "b"), 0, "Math", "easy"));
+            bank.add(new MultipleChoiceQuestion(
+                    "Q" + i, List.of("a", "b"), "a", "Math", "easy"));
         }
         service = new QuizService(bank, new StubApiClient());
     }
@@ -44,7 +46,7 @@ class QuizServiceTest {
     void submit_allCorrect_returnsFullScoreResult() {
         Quiz quiz = service.generateQuiz("Test", 3,
                 new RandomSelectionStrategy(new Random(1)), 300);
-        QuizResult result = service.submit(quiz, List.of(0, 0, 0), "S-001");
+        QuizResult result = service.submit(quiz, List.of("a", "a", "a"), "S-001");
         assertAll(
                 () -> assertEquals(3, result.getCorrectCount()),
                 () -> assertEquals(3, result.getTotalCount()),
@@ -74,9 +76,9 @@ class QuizServiceTest {
         @Override
         public List<Question> fetchQuestions(int amount, String difficulty) {
             return List.of(
-                    new Question("API Q1", List.of("a", "b"), 0, "Math", "easy"),
-                    new Question("API Q2", List.of("a", "b"), 0, "Math", "easy"),
-                    new Question("API Q3", List.of("a", "b"), 0, "Math", "easy")
+                    new MultipleChoiceQuestion("API Q1", List.of("a", "b"), "a", "Math", "easy"),
+                    new MultipleChoiceQuestion("API Q2", List.of("a", "b"), "a", "Math", "easy"),
+                    new MultipleChoiceQuestion("API Q3", List.of("a", "b"), "a", "Math", "easy")
             );
         }
     }

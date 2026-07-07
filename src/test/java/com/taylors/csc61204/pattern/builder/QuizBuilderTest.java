@@ -1,5 +1,6 @@
 package com.taylors.csc61204.pattern.builder;
 
+import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.QuestionBank;
 import com.taylors.csc61204.model.Quiz;
@@ -23,7 +24,8 @@ class QuizBuilderTest {
         bank = new QuestionBank();
         for (int i = 0; i < 10; i++) {
             String difficulty = (i < 5) ? "easy" : "hard";
-            bank.add(new Question("Q" + i, List.of("a", "b"), 0, "Math", difficulty));
+            bank.add(new MultipleChoiceQuestion(
+                    "Q" + i, List.of("a", "b"), "a", "Math", difficulty));
         }
     }
 
@@ -82,7 +84,7 @@ class QuizBuilderTest {
     }
 
     @Test
-    void build_strategyNotEnoughQuestions_throwsIllegalArgumentException() {
+    void build_strategyNotEnoughQuestions_throwsIllegalStateException() {
         QuizBuilder builder = new QuizBuilder(bank)
                 .withStrategy(new DifficultyBasedStrategy("hard"))
                 .withCount(20);

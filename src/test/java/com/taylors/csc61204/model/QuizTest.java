@@ -19,9 +19,13 @@ class QuizTest {
 
     @BeforeEach
     void setUp() {
-        mathQ = new Question("2 + 2 = ?", List.of("3", "4", "5"), 1, "Math", "easy");
-        scienceQ = new Question("Water boils at?", List.of("90C", "100C", "110C"), 1, "Science", "easy");
-        historyQ = new Question("WWII ended in?", List.of("1943", "1945", "1947"), 1, "History", "medium");
+        // Mixed subclasses to prove Quiz grades polymorphically.
+        mathQ = new MultipleChoiceQuestion(
+                "2 + 2 = ?", List.of("3", "4", "5"), "4", "Math", "easy");
+        scienceQ = new TrueFalseQuestion(
+                "Water boils at 100°C at sea level.", true, "Science", "easy");
+        historyQ = new ShortAnswerQuestion(
+                "Which year did WWII end?", "1945", "History", "medium");
         quiz = new Quiz("Q-001", "Sample Quiz", List.of(mathQ, scienceQ, historyQ), 600);
     }
 
@@ -37,32 +41,32 @@ class QuizTest {
 
     @Test
     void grade_allCorrectAnswers_returnsFullScore() {
-        int score = quiz.grade(List.of(1, 1, 1));
+        int score = quiz.grade(List.of("4", "true", "1945"));
         assertEquals(3, score);
     }
 
     @Test
     void grade_allWrongAnswers_returnsZero() {
-        int score = quiz.grade(List.of(0, 0, 0));
+        int score = quiz.grade(List.of("3", "false", "1943"));
         assertEquals(0, score);
     }
 
     @ParameterizedTest
     @CsvSource({
-            "1, 1, 1, 3",
-            "1, 1, 0, 2",
-            "1, 0, 0, 1",
-            "0, 0, 0, 0",
-            "0, 1, 0, 1"
+            "4,    true,  1945, 3",
+            "4,    true,  1943, 2",
+            "4,    false, 1943, 1",
+            "3,    false, 1943, 0",
+            "3,    true,  1943, 1"
     })
-    void grade_variousAnswerSets_returnsExpectedScore(int a, int b, int c, int expected) {
-        int score = quiz.grade(List.of(a, b, c));
-        assertEquals(expected, score);
+    void grade_variousAnswerSets_returnsExpectedScore(
+            String a, String b, String c, int expected) {
+        assertEquals(expected, quiz.grade(List.of(a, b, c)));
     }
 
     @Test
     void grade_wrongNumberOfAnswers_throwsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> quiz.grade(List.of(1, 1)));
+        assertThrows(IllegalArgumentException.class, () -> quiz.grade(List.of("4", "true")));
     }
 
     @Test
