@@ -23,7 +23,7 @@ delivers personalised feedback that focuses future quizzes on weak topics.
 
 ## Build & run
 
-Prerequisites: JDK 21, Maven 3.9+ (IntelliJ IDEA bundles both).
+Prerequisites: JDK 25, Maven 3.9+ (IntelliJ IDEA bundles Maven; install JDK 25 via `brew install --cask temurin@25` or IntelliJ's built-in JDK downloader).
 
 ```bash
 mvn clean package
