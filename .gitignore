@@ -3,7 +3,14 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Maven shade plugin byproduct
+dependency-reduced-pom.xml
+
 ### IntelliJ IDEA ###
+# IDE "Build Artifacts" output — the real jar is built by Maven (mvn package)
+out/
+META-INF/
+.idea/artifacts/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml

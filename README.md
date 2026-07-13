@@ -13,7 +13,7 @@ delivers personalised feedback that focuses future quizzes on weak topics.
   true/false, short-answer)
 - **Builder pattern** for fluent quiz construction
 - **Strategy pattern** for pluggable question-selection algorithms
-  (`Random`, `DifficultyBased`, `WeakTopic`, `WeaknessFocused`)
+  (`Random`, `DifficultyBased`, `WeaknessFocused`)
 - **External API integration** with [Open Trivia DB](https://opentdb.com/api.php)
   — fetches fresh questions on demand, with graceful degradation to the seed
   bank when the API is unavailable
@@ -54,7 +54,7 @@ src/main/java/com/taylors/csc61204/
 ├── model/                  # Question hierarchy, Quiz, Student, results
 ├── pattern/
 │   ├── builder/            # QuizBuilder (Builder pattern)
-│   └── strategy/           # QuestionSelectionStrategy + 4 implementations
+│   └── strategy/           # QuestionSelectionStrategy + 3 implementations
 ├── api/                    # Open Trivia DB client + mapper + exception
 ├── persistence/            # DataStore interface + JsonDataStore
 ├── service/                # QuizService + FeedbackService

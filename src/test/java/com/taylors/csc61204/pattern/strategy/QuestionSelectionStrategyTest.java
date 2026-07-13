@@ -3,6 +3,7 @@ package com.taylors.csc61204.pattern.strategy;
 import com.taylors.csc61204.model.MultipleChoiceQuestion;
 import com.taylors.csc61204.model.Question;
 import com.taylors.csc61204.model.QuestionBank;
+import com.taylors.csc61204.model.StudentPerformance;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,37 +89,15 @@ class QuestionSelectionStrategyTest {
     }
 
     @Test
-    void weakTopicStrategy_singleWeakCategory_drawsFromThatCategory() {
-        QuestionSelectionStrategy s = new WeakTopicStrategy(List.of("Math"));
-        List<Question> result = s.select(bank, 2);
-        assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertTrue(result.stream().allMatch(q -> q.getCategory().equals("Math")))
-        );
-    }
-
-    @Test
-    void weakTopicStrategy_multipleCategoriesInOrder_prioritisesFirst() {
-        QuestionSelectionStrategy s = new WeakTopicStrategy(List.of("History", "Science"));
-        List<Question> result = s.select(bank, 3);
-        assertEquals("History", result.get(0).getCategory());
-    }
-
-    @Test
-    void weakTopicStrategy_insufficientQuestions_throwsIllegalArgumentException() {
-        QuestionSelectionStrategy s = new WeakTopicStrategy(List.of("History"));
-        assertThrows(IllegalArgumentException.class, () -> s.select(bank, 5));
-    }
-
-    @Test
     void strategiesAreSwappable_sameInterfaceSameBank_runtimePolymorphism() {
         QuestionSelectionStrategy random = new RandomSelectionStrategy(new Random(1));
         QuestionSelectionStrategy difficulty = new DifficultyBasedStrategy("easy");
-        QuestionSelectionStrategy weak = new WeakTopicStrategy(List.of("Math"));
+        QuestionSelectionStrategy weakness = new WeaknessFocusedStrategy(
+                new StudentPerformance("S-TEST"), new RandomSelectionStrategy(new Random(2)));
         assertAll(
                 () -> assertEquals(2, random.select(bank, 2).size()),
                 () -> assertEquals(2, difficulty.select(bank, 2).size()),
-                () -> assertEquals(2, weak.select(bank, 2).size())
+                () -> assertEquals(2, weakness.select(bank, 2).size())
         );
     }
 }

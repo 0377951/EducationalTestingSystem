@@ -4,6 +4,8 @@ import com.taylors.csc61204.model.Quiz;
 import com.taylors.csc61204.model.QuizResult;
 import com.taylors.csc61204.model.StudentPerformance;
 import com.taylors.csc61204.pattern.strategy.DifficultyBasedStrategy;
+import com.taylors.csc61204.pattern.strategy.QuestionSelectionStrategy;
+import com.taylors.csc61204.pattern.strategy.WeaknessFocusedStrategy;
 import com.taylors.csc61204.persistence.DataStore;
 import com.taylors.csc61204.persistence.DataStoreException;
 import com.taylors.csc61204.service.FeedbackService;
@@ -55,12 +57,22 @@ public class QuizController {
             Quiz quiz = quizService.generateQuiz(
                     "Quiz — " + difficulty,
                     count,
-                    new DifficultyBasedStrategy(difficulty),
+                    selectionStrategyFor(difficulty),
                     DEFAULT_TIME_LIMIT_SECONDS);
             view.showQuiz(new QuizScreen(quiz, answers -> onSubmit(quiz, answers)));
         } catch (Exception ex) {
             view.showError("Could not start quiz: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Adaptive selection: once the student has quiz history, focus on their
+     * weak categories ({@link WeaknessFocusedStrategy}); until then — and when
+     * the weak categories run dry — fall back to the difficulty the user chose.
+     */
+    private QuestionSelectionStrategy selectionStrategyFor(String difficulty) {
+        return new WeaknessFocusedStrategy(
+                performance, new DifficultyBasedStrategy(difficulty));
     }
 
     private void ensureBankPopulated(String difficulty, int count) {

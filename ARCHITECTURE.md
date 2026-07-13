@@ -24,8 +24,7 @@ Used by the team when writing the report and preparing for individual Q&A.
 | `strategy.QuestionSelectionStrategy` | Strategy interface. One method: `select(bank, count)`. Demonstrates the Open/Closed Principle. |
 | `strategy.RandomSelectionStrategy` | Uniform random selection (seedable for reproducible tests). |
 | `strategy.DifficultyBasedStrategy` | Picks questions of a target difficulty level. |
-| `strategy.WeakTopicStrategy` | Picks from a caller-supplied ordered list of categories. |
-| `strategy.WeaknessFocusedStrategy` | Adaptive: inspects a `StudentPerformance`, picks from that student's weak categories. Falls back to random when history is empty. |
+| `strategy.WeaknessFocusedStrategy` | Adaptive: inspects a `StudentPerformance`, picks from that student's weak categories. Falls back to a supplied strategy (random by default) when history is empty. `QuizController` uses it with a `DifficultyBasedStrategy` fallback. |
 
 ## API layer — `com.taylors.csc61204.api`
 
